@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('./partials/head') %>
+    <title>Login</title>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+
+    <div class="container mt-4">
+      <div class="row">
+          <div class="col-12">
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Library</li>
+                  </ol>
+              </nav>
+          </div>
+          <div class="col-12">
+              <!-- sample table -->
+              <h1 class="h1 fw-bold"> Dashboard/title</h1>
+
+              <div class="card">
+                  <h5 class="card-header">Manage Users</h5>
+                  <div class="card-body">
+                      <table class="table table-hover">
+                          <thead>
+                              <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">First</th>
+                                  <th scope="col">Last</th>
+                                  <th scope="col">Handle</th>
+                                  <th scope="col">actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <th scope="row">1</th>
+                                  <td>Mark</td>
+                                  <td>Otto</td>
+                                  <td>@mdo</td>
+                                  <td>
+                                      <a href="javascript:;" class="btn btn-sm btn-secondary me-1"
+                                          data-bs-toggle="tooltip" data-bs-title="View Details">
+                                          <i class="fa-solid fa-eye"></i>
+                                      </a>
+                                      <a href="javascript:;" class="btn btn-sm btn-danger delete-item"
+                                          data-bs-toggle="tooltip" data-bs-title="Delete">
+                                          <i class="fa-solid fa-trash-can"></i>
+                                      </a>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row">2</th>
+                                  <td>Jacob</td>
+                                  <td>Thornton</td>
+                                  <td>@fat</td>
+                                  <td>
+                                      <a href="javascript:;" class="btn btn-sm btn-secondary me-1"
+                                          data-bs-toggle="tooltip" data-bs-title="View Details">
+                                          <i class="fa-solid fa-eye"></i>
+                                      </a>
+                                      <a href="javascript:;" class="btn btn-sm btn-danger delete-item"
+                                          data-bs-toggle="tooltip" data-bs-title="Delete">
+                                          <i class="fa-solid fa-trash-can"></i>
+                                      </a>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row">3</th>
+                                  <td colspan="2">Larry the Bird</td>
+                                  <td>@twitter</td>
+                                  <td>
+                                      <a href="javascript:;" class="btn btn-sm btn-secondary me-1"
+                                          data-bs-toggle="tooltip" data-bs-title="View Details">
+                                          <i class="fa-solid fa-eye"></i>
+                                      </a>
+                                      <a href="javascript:;" class="btn btn-sm btn-danger delete-item"
+                                          data-bs-toggle="tooltip" data-bs-title="Delete">
+                                          <i class="fa-solid fa-trash-can"></i>
+                                      </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <div class="card-footer">
+                      <nav aria-label="Page navigation example" class=" mt-2">
+                          <ul class="pagination justify-content-end">
+                              <li class="page-item disabled">
+                                  <a class="page-link">Previous</a>
+                              </li>
+                              <li class="page-item"><a class="page-link" href="#">1</a></li>
+                              <li class="page-item"><a class="page-link" href="#">2</a></li>
+                              <li class="page-item"><a class="page-link" href="#">3</a></li>
+                              <li class="page-item">
+                                  <a class="page-link" href="#">Next</a>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<%- include('./partials/scripts') %>
+
+</body>
+
+</html>

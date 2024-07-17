@@ -1,0 +1,48 @@
+<!-- the navbar -->
+<div class="container-fluid bg-light  border-bottom shadow-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                    <div class="container-fluid">
+                        <a class="navbar-brand text-monospace fw-bold" href="/">ST8-Node</a>
+                        <% if (typeof user !== 'undefined') { %>
+                          <button class="btn btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu"
+                              aria-controls="offcanvas-menu">
+                              <i class="fa-solid fa-bars"></i>
+                          </button>
+                        <% } %>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+  
+    <!-- hidden offcanvas element for menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menuLabel"
+        data-bs-scroll="true">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvas-menuLabel">Offcanvas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+              <% if (typeof user !== 'undefined') { %>
+               
+                  <p class="fw-bold"> Hi, <%= user.fullName %> </p>
+              <% } %>
+            </div>
+            <div class="dropdown mt-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Dropdown button
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="/v1/chief/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  
+  </div>
