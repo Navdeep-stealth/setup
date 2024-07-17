@@ -2,25 +2,25 @@ import { User } from "../models/admin.model.js";
 import { createTokenForUser } from "../utils/authentication.js";
 
 //register User
-const registerUser = async (req,res) => {
+const registerUser = async (req,reply) => {
 
     const {fullName, email, password, role, status } = req.body
 
     try {
         //check user type
         if(req.user.role !== `${process.env.USER_TYPE_1}`){
-            return res.status(401).json({errorMessage: "Access Denied..!"})
+            return reply.status(401).json({errorMessage: "Access Denied..!"})
         }
 
         //validate incoming data
         if(!fullName || !email || !password){
-            return res.status(400).json({errorMessage: "Full name, email and password are required..!"})
+            return reply.status(400).json({errorMessage: "Full name, email and password are required..!"})
         }
 
         //check if user already exist
         const existingUser = await User.findOne({email});
         if(existingUser){
-            return res.status(400).json({errorMessage: "Email already exists..!"})
+            return reply.status(400).json({errorMessage: "Email already exists..!"})
         }
 
         const newUser = new User({
@@ -32,33 +32,35 @@ const registerUser = async (req,res) => {
         })
 
         await newUser.save()
-        res.status(201).json({message: "User created successfully"})
+        reply.status(201).json({message: "User created successfully"})
     } catch (error) {
         console.log("Error while registering user", error);
-        return res.status(500).json({errorMessage: "Internal server error..!"})
+        return reply.status(500).json({errorMessage: "Internal server error..!"})
     }
 }
 
-const renderLogin = async (req, res) => {
-    res.render('login', {msg: "Login rendered.."})
+async function renderLogin (req, reply){
+    reply.send({message:'welcome'})
+    // reply.view('login.ejs')
+    // reply.view('login.ejs', {msg: "Login rendered.."})
 }
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, reply) => {
     const {email, password} = req.body
     try {
         if(!email && !password){
-            return res.render('login', {errorMessage: "Both email and password are required."})
+            return reply.view('login.ejs', {errorMessage: "Both email and password are required."})
         }
 
         const user = await User.findOne({email})
 
         if(!user){
-            return res.render('login', {errorMessage: "User does not exist, please contact admin."})
+            return reply.view('login.ejs', {errorMessage: "User does not exist, please contact admin."})
         }
 
         const isPasswordValid = await user.isPasswordCorrect(password)
         if(!isPasswordValid){
-            return res.render('login', {errorMessage: "Password is incorrect.!"})
+            return reply.view('login.ejs', {errorMessage: "Password is incorrect.!"})
         }
 
         const accessToken = createTokenForUser(user)
@@ -68,37 +70,37 @@ const loginUser = async (req, res) => {
             secure: true,
         };
 
-        res.cookie('accessToken', accessToken, options);
-        return res.redirect('/v1/chief/dashboard');
+        reply.cookie('accessToken', accessToken, options);
+        return reply.redirect('/v1/chief/dashboard');
 
     } catch (error) {
         console.log("login failed", error);
-        return res.render('login', {errorMessage: "Login failed, please try again..!"})
+        return reply.view('.ejs', {errorMessage: "Login failed, please try again..!"})
     }
     
 }
 
-const renderDashboard = async (req,res) => {
+const renderDashboard = async (req,reply) => {
     const user = req.user
     if(user){
-        return res.render('dashboard', {user})
+        return reply.view('dashboard.ejs', {user})
     }
     else{
-        res.redirect('/v1/chief/login')
+        reply.redirect('/v1/chief/login')
     }
 }
 
-const logout = async (req, res) => {
+const logout = async (req, reply) => {
     try {
         const options = {
             httpOnly: true,
             secure: true
          }
-         res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
-         return res.clearCookie("accessToken", options).redirect('/v1/chief/login')
+         reply.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+         return reply.clearCookie("accessToken", options).redirect('/v1/chief/login')
     } catch (error) {
         console.log("Error while logging out");
-        res.send(error.message)
+        reply.send(error.message)
     }
 }
 

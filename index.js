@@ -4,7 +4,7 @@ import fastifyStatic from '@fastify/static';
 import fastify from 'fastify';
 import ejs from 'ejs';
 import { fileURLToPath } from 'url'; // Import fileURLToPath to convert URL to path
-import router from './routes/admin.route';
+import controllermain from './routes/admin.route.js';
 
 const __filename = fileURLToPath(import.meta.url); // Get current file path
 const __dirname = path.dirname(__filename); // Get directory path
@@ -21,18 +21,16 @@ const fastifyApp = fastify({
         },
     },
 });
+
 fastifyApp
     .register(fastifyStatic, {
         root: path.join(__dirname, 'public') // Adjust path based on your project structure
     })
     .listen({ port: 3002 }, err => {
         if (err) throw err;
-        console.log('Server listening on port http://localhost:3002');
+        console.log('Server listening on port http://localhost:3002/v1/chief/login');
     });
 
-fastifyApp.get('/', (req, rep) => {
-    rep.view('login.ejs');
-});
 
 fastifyApp.register(fastifyView, {
     engine: {
@@ -42,5 +40,4 @@ fastifyApp.register(fastifyView, {
 });
 
 
-fastify.register(router, { prefix: '/v1/chief' });
-fastify.register(dbconnect);
+fastifyApp.register(controllermain, { prefix: '/v1/chief' });

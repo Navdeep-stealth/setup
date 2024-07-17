@@ -12,10 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/mongodb": "^8.0.0",
     "@fastify/static": "^7.0.4",
     "@fastify/view": "^9.1.0",
+    "bcrypt": "^5.1.1",
     "ejs": "^3.1.10",
-    "fastify": "^4.28.1"
+    "fastify": "^4.28.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
     "pino": "^9.3.1",
