@@ -40,8 +40,8 @@ const registerUser = async (req,reply) => {
 }
 
 async function renderLogin (req, reply){
-    reply.send({message:'welcome'})
-    // reply.view('login.ejs')
+    // reply.send({message:'welcome'})
+    return reply.view('login.ejs')
     // reply.view('login.ejs', {msg: "Login rendered.."})
 }
 
