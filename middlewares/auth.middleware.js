@@ -1,27 +1,29 @@
-import jwt from "jsonwebtoken"
-import { User } from "../models/admin.model.js"
-import { ApiError } from "../utils/apiError.js"
+import jwt from "jsonwebtoken";
+import { User } from "../models/admin.model.js";
+import { ApiError } from "../utils/apiError.js";
 
-export const verifyJWT = async(req, res, next) => {
+export const verifyJWT = async (req, reply) => {
     try {
-        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
-    
-        if(!token){
-            return res.render('login', {errorMessage: "Unauthorized request"})
+        const token = req.cookies?.accessToken || req.headers["authorization"]?.replace("Bearer ", "");
+
+        if (!token) {
+            return reply.view('login.ejs', { errorMessage: "Unauthorized request" });
+            // return reply.send('You Must Have To Login First')
         }
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-        const user = await User.findById(decodedToken?._id).select("-password")
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-        if(!user){
-            return res.render('login', {errorMessage: "Invalid Access"})
+        const user = await User.findById(decodedToken?._id).select("-password");
+
+        if (!user) {
+            return reply.view('login.ejs', { errorMessage: "Invalid Access" });
+            // return reply.send('You Must Have To Login First')
+
         }
 
         req.user = user;
 
-        next();
-    } 
-    catch (error) {
-        throw new ApiError(401, error?.message, "Invalid access token")
+    } catch (error) {
+        throw new ApiError(401, error?.message, "Invalid access token");
     }
-}
+};
