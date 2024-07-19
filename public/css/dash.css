@@ -1,0 +1,28 @@
+.customize-card{
+        width: 20rem;
+        height: 10rem;
+        background: skyblue;
+        color: black;
+}
+
+.justify{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 5px 20px;
+}
+
+
+.sub-card h3{
+
+    font-weight: 900;
+}
+.sub-card h4{
+
+    font-weight: 600;
+}
+
+.menuSpace{
+    max-width: 20rem;
+}

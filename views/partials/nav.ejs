@@ -6,43 +6,76 @@
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
                         <a class="navbar-brand text-monospace fw-bold" href="/">ST8-Node</a>
-                        <% if (typeof user !== 'undefined') { %>
-                          <button class="btn btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu"
-                              aria-controls="offcanvas-menu">
-                              <i class="fa-solid fa-bars"></i>
-                          </button>
-                        <% } %>
+                        <% if (typeof user !=='undefined' ) { %>
+                            <button class="btn btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu"
+                                aria-controls="offcanvas-menu">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>
+                            <% } %>
                     </div>
                 </nav>
             </div>
         </div>
     </div>
-  
+
     <!-- hidden offcanvas element for menu -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menuLabel"
-        data-bs-scroll="true">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvas-menuLabel">Offcanvas</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div>
-              <% if (typeof user !== 'undefined') { %>
-               
-                  <p class="fw-bold"> Hi, <%= user.fullName %> </p>
-              <% } %>
+    <div class="menuSpace">
+        <div class="offcanvas offcanvas-end menuSpace" tabindex="-1" id="offcanvas-menu"
+            aria-labelledby="offcanvas-menuLabel" data-bs-scroll="true">
+            <div class="offcanvas-header">
+                <div>
+                    <% if (typeof user !=='undefined' ) { %>
+
+                        <p class="fw-bold"> Hi, <%= user.fullName %>
+                        </p>
+                        <% } %>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="dropdown mt-3">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    Dropdown button
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="/v1/chief/logout">Logout</a></li>
-                </ul>
+            <div class="offcanvas-body">
+
+                <% if (typeof user !=='undefined' ) { %>
+
+                    <% if (user.role==='super_admin' ) { %>
+                        <div class="list-group">
+
+                            <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
+                            <a class="list-group-item list-group-item-action" href="#">Change Password</a>
+                            <a class="list-group-item list-group-item-action" href="#">Requests</a>
+                            <a class="list-group-item list-group-item-action" href="#">Invoice</a>
+                            <a class="list-group-item list-group-item-action" href="#">Settlement</a>
+
+
+
+                            <a class="list-group-item list-group-item-action" href="#">Manage Domains</a>
+                            <a class="list-group-item list-group-item-action" href="#">Manage Sub Domains</a>
+                            <a class="list-group-item list-group-item-action" href="#">Manage Debir Requests</a>
+
+                            <a class="list-group-item list-group-item-action" href="#">Manage Games</a>
+                            <a class="list-group-item list-group-item-action" href="#">Report</a>
+                            <a class="list-group-item list-group-item-action" href="#">Revenue</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>
+                        </div>
+
+                        <% } else { %>
+
+                            <div class="list-group">
+
+                                <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
+                                <a class="list-group-item list-group-item-action" href="#">Change Password</a>
+                                <a class="list-group-item list-group-item-action" href="#">Settlement</a>
+                                <a class="list-group-item list-group-item-action" href="#">Manage Games</a>
+                                <a class="list-group-item list-group-item-action" href="#">Report</a>
+                                <a class="list-group-item list-group-item-action" href="#">Revenue</a>
+                                <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>
+                            </div>
+                            <% } %>
+                                <% } %>
+
+
             </div>
         </div>
     </div>
-  
-  </div>
+</div>
+
+</div>
