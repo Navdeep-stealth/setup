@@ -26,7 +26,7 @@
                 <div>
                     <% if (typeof user !=='undefined' ) { %>
 
-                        <p class="fw-bold"> Hi, <%= user.fullName %>
+                        <p class="fw-bold"> Hi, <%= user.fullname %>
                         </p>
                         <% } %>
                 </div>
@@ -44,10 +44,9 @@
                             <a class="list-group-item list-group-item-action" href="#">Requests</a>
                             <a class="list-group-item list-group-item-action" href="#">Invoice</a>
                             <a class="list-group-item list-group-item-action" href="#">Settlement</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/register">Register New User</a>
 
-
-
-                            <a class="list-group-item list-group-item-action" href="#">Manage Domains</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/users">Manage Domains</a>
                             <a class="list-group-item list-group-item-action" href="#">Manage Sub Domains</a>
                             <a class="list-group-item list-group-item-action" href="#">Manage Debir Requests</a>
 

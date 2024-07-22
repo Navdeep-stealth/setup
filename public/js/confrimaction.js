@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Select the link using its class
-    const link = document.querySelector('.confirm-link');
+    const link = document.getElementById('#confirm-link');
     
     // Add a click event listener to the link
     link.addEventListener('click', function(event) {

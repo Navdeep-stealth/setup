@@ -1,31 +1,32 @@
+import fastify from "fastify";
 import { User } from "../models/admin.model.js";
 import { createTokenForUser } from "../utils/authentication.js";
 
 //register User
 async function registerUser(request, reply) {
 
-    const { fullName, email, password, role, status } = request.body
+    const { fullname, username, password, role, status } = request.body
 
     try {
         //check user type
         if (request.user.role !== `${process.env.USER_TYPE_1}`) {
-            return reply.status(401).json({ errorMessage: "Access Denied..!" })
+            return reply.status(401).send({ errorMessage: "Access Denied..!" })
         }
 
         //validate incoming data
-        if (!fullName || !email || !password) {
-            return reply.status(400).json({ errorMessage: "Full name, email and password are required..!" })
+        if (!fullname || !password) {
+            return reply.status(400).send({ errorMessage: "Full name and password are required..!" })
         }
 
         //check if user already exist
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ username });
         if (existingUser) {
-            return reply.status(400).send({ errorMessage: "Email already exists..!" })
+            return reply.status(400).send({ errorMessage: "Username already exists..!" })
         }
 
         const newUser = new User({
-            fullName,
-            email,
+            fullname,
+            username,
             password,
             role: role || 'admin',
             status: status || 'active'
@@ -35,7 +36,7 @@ async function registerUser(request, reply) {
         reply.status(201).send({ message: "User created successfully" })
     } catch (error) {
         console.log("Error while registering user", error);
-        return reply.status(500).json({ errorMessage: "Internal server error..!" })
+        return reply.status(500).send({ errorMessage: "Internal server error..!" })
     }
 }
 
@@ -44,16 +45,39 @@ async function renderLogin(req, reply) {
     return reply.view('login.ejs')
     // reply.view('login.ejs', {msg: "Login rendered.."})
 }
+async function renderRegister(req, reply) {
+    // reply.send({message:'welcome'})
+    return reply.view('register.ejs')
+    // reply.view('login.ejs', {msg: "Login rendered.."})
+}
+async function renderUsers(req, reply) {
+    // reply.send({message:'welcome'})
+
+    const users = await User.find({})
+
+    return reply.view('Users.ejs',{users})
+    // reply.view('login.ejs', {msg: "Login rendered.."})
+}
+async function editUser(req, reply) {
+    // reply.send({message:'welcome'})
+
+    const user = await User.findOne({_id:req.params.id})
+
+    //console.log(user);
+    return reply.view('edituser.ejs',{user})
+
+    // reply.view('login.ejs', {msg: "Login rendered.."})
+}
 
 async function loginUser(req, reply) {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        if (!email || !password) {
-            return reply.view('login.ejs', { errorMessage: "Both email and password are required." });
+        if (!username || !password) {
+            return reply.view('login.ejs', { errorMessage: "Both username and password are required." });
         }
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
 
         if (!user) {
             return reply.view('login.ejs', { errorMessage: "User does not exist, please contact admin." });
@@ -69,6 +93,7 @@ async function loginUser(req, reply) {
         const options = {
             httpOnly: true,
             secure: true,
+            path: '/v1/chief'
         };
 
         reply.setCookie('accessToken', accessToken, options);
@@ -91,7 +116,7 @@ async function renderDashboard(req, reply) {
 
         let users = await User.find({})
 
-        return reply.view('dashboard.ejs', { user,users })
+        return reply.view('dashboard.ejs', { user, users })
     }
     else {
         reply.redirect('/v1/chief/login')
@@ -127,11 +152,13 @@ async function logout(req, reply) {
     try {
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            path: '/v1/chief'
+
         };
 
         // Clear the access token cookie
-        reply.clearCookie('accessToken', {path: '/'})
+        reply.clearCookie('accessToken', options)
 
         // Set Cache-Control headers to prevent caching
         reply.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
@@ -145,6 +172,46 @@ async function logout(req, reply) {
     }
 }
 
+/* Update User */
+
+async function updateUser(req,reply){
+    let user = await User.findOne({_id:req.params.id})
+
+try {
+    if (!user) {
+       return reply.send('user not found' )
+        
+    }
+    if (req.body.fullname) {
+
+        await user
+        user.fullname = req.body.fullname
+        await user.save();
+        console.log('fullname Changed SUccessfully');    
+    }
+    if (req.body.password) {
+
+        await user
+        user.password = req.body.password
+        await user.save();
+        console.log('password Changed SUccessfully');    
+    }
+    if (req.body.status) {
+
+        await user
+        user.status = req.body.status
+        await user.save();
+        console.log('status Changed SUccessfully');    
+    }
+
+    reply.redirect('/v1/chief/users')
+} catch (error) {
+    fastify.info.log(error)
+}
+
+
+}
+
 
 export {
     registerUser,
@@ -152,5 +219,8 @@ export {
     loginUser,
     renderDashboard,
     deleteUser,
-    logout
+    logout, renderRegister,
+    renderUsers,
+    editUser,
+    updateUser
 }

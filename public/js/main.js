@@ -2,26 +2,29 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('loginForm')
-  const emailInput = document.getElementById('userEmail')
+  const userInput = document.getElementById('username')
   const passwordInput = document.getElementById('userPassword')
   const loginButton = document.getElementById('loginButton')
 
-  function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return re.test(email)
+  function validateUsername(username) {
+    const re = /^\S{6,12}$/; // \S matches any non-whitespace character, {1,12} ensures length is between 1 and 12
+    return re.test(username);
   }
+  
 
   function validatePassword(password) {
-    return password.length >=1
+    const re = /^.{8,12}$/; // Ensures the password is between 8 and 12 characters long
+    return re.test(password);
   }
+  
 
-  emailInput && emailInput.addEventListener('input', function() {
-    if(validateEmail(emailInput.value.trim())){
-      emailInput.classList.remove('is-invalid')
-      emailInput.classList.add('is-valid')
+  userInput && userInput.addEventListener('input', function() {
+    if(validateUsername(userInput.value.trim())){
+      userInput.classList.remove('is-invalid')
+      userInput.classList.add('is-valid')
     } else {
-      emailInput.classList.remove('is-valid');
-      emailInput.classList.add('is-invalid');
+      userInput.classList.remove('is-valid');
+      userInput.classList.add('is-invalid');
     }
   })
 
@@ -37,13 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   form && form.addEventListener('submit', function(event) {
-    emailInput.classList.remove('is-invalid')
+    userInput.classList.remove('is-invalid')
     passwordInput.classList.remove('is-invalid')
 
     let valid = true;
 
-    if(!emailInput.value.trim()){
-      emailInput.classList.add('is-invalid')
+    if(!userInput.value.trim()){
+      userInput.classList.add('is-invalid')
       valid = false;
     }
 

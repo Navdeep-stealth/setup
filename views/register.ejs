@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>Register</title>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+        <section class="vh-96">
+            <div class="container py-5 h-96">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-light-subtle text-dark" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+
+                                <div>
+
+                                    <h2 class="fw-bold mb-2 text-uppercase">Register New User</h2>
+                                    <!-- <p class="text-dark-50 mb-5">Enter Username and Password.!</p> -->
+                                    <p class="text-dark-50 mb-5">_________________________________</p>
+
+
+
+                                    <form action="/v1/chief/registerNewUser" method="post" id="loginForm">
+
+                                        <!-- <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="userEmail" name="email"
+                          placeholder="Enter email..." />
+                      </div> -->
+
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" class="form-control form-control-lg" id="username"
+                                                name="username" placeholder="Enter Username..." />
+                                        </div>
+
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" class="form-control form-control-lg" id="Fullname"
+                                                name="fullname" placeholder="Enter FullName..." />
+                                        </div>
+
+
+                                        <select class="form-select form-outline mb-4"
+                                            aria-label="Default select example" name="role">
+                                            <option value="admin">Admin</option>
+                                            <option value="super_admin">SuperAdmin</option>
+                                        </select>
+
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="password" class="form-control form-control-lg"
+                                                id="userPassword" name="password" placeholder="Enter Password..." />
+                                        </div>
+
+                                        <% if (typeof errorMessage !=="undefined" ) { %>
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    Toastify({
+                                                        text: "<%= errorMessage %>",
+                                                        duration: 3000,
+                                                        close: true,
+                                                        gravity: "top", // `top` or `bottom`
+                                                        position: "right", // `left`, `center` or `right`
+                                                        backgroundColor: "red",
+                                                    }).showToast();
+                                                });
+                                            </script>
+                                            <% } %>
+
+                                                <button data-mdb-button-init data-mdb-ripple-init
+                                                    class="btn bg-dark text-light btn-md px-5" id="loginButton"
+                                                    type="submit">Register</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <%- include('./partials/scripts') %>
+</body>
+
+</html>

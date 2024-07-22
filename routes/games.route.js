@@ -11,12 +11,12 @@ const setNoCacheHeaders = async (req, reply) => {
 };
 
 async function games (fastify, options) {
-    fastify.get('/login', getAllGames);
-    fastify.post('/registerNewUser', { preHandler: [verifyJWT] }, registerUser);
-    fastify.post('/login',loginUser)
-    fastify.get('/delete/:id',{ preHandler: [verifyJWT] },deleteUser)
-    fastify.get('/dashboard', { preHandler: [verifyJWT, setNoCacheHeaders] },renderDashboard)
-    fastify.get('/logout',{ preHandler: [verifyJWT] }, logout)
+    // fastify.get('/login', getAllGames);
+    // fastify.post('/registerNewUser', { preHandler: [verifyJWT] }, registerUser);
+    // fastify.post('/login',loginUser)
+    // fastify.get('/delete/:id',{ preHandler: [verifyJWT] },deleteUser)
+    // fastify.get('/dashboard', { preHandler: [verifyJWT, setNoCacheHeaders] },renderDashboard)
+    // fastify.get('/logout',{ preHandler: [verifyJWT] }, logout)
 
 
 }

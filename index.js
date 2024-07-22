@@ -10,6 +10,7 @@ import { config } from 'dotenv';
 import fastifyFormbody from '@fastify/formbody';
 import fastifyCookie from '@fastify/cookie';
 import { games } from './routes/games.route.js';
+import fastifyMongodb from '@fastify/mongodb';
 
 /* load env config */
 config();
@@ -19,6 +20,7 @@ const __filename = fileURLToPath(import.meta.url); // Get current file path
 
 /* set directory path fro static resource */
 const __dirname = path.dirname(__filename); // Get directory path
+
 
 
 /* initiate fastify */
@@ -43,13 +45,15 @@ fastifyApp.register(fastifyFormbody);
 fastifyApp.register(fastifyCookie);
 
 
-/* register static resource */
 fastifyApp
-    .register(fastifyStatic, {
+.register(fastifyStatic, {
+        /* register static resource */
         root: path.join(__dirname, 'public') // Adjust path based on your project structure
     })
+
+
     /* start listening to port */
-    .listen({ port: 3002 }, err => {
+    .listen({port:process.env.PORT}, err => {
         if (err) throw err;
         console.log('Server listening on port http://localhost:3002/v1/chief/login');
     });
