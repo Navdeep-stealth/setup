@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('./partials/head') %>
+    <title>All Users</title>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+
+    <div class="container mt-4">
+      <div class="row">
+          <div class="col-12">
+              <!-- sample table -->
+              <h1 class="h1 fw-bold">Dashboard</h1>
+
+              <div class="card">
+                  <h5 class="card-header">Manage Games</h5>
+                  <div class="card-body">
+                      <table class="table table-hover">
+                          <thead>
+                              <tr>
+                                  <th scope="col">Sr.No</th>
+                                  <th scope="col">Category Image</th>
+                                  <th scope="col">Category Name</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Action</th>
+
+
+                              </tr>
+                          </thead>
+                          <% let count = 1; %>
+                          <% users.forEach((user) => { %>
+                            <tbody>
+                                <tr>
+                                    <td><%= count++ %></td>
+                                    <td id="imageContainer"><img src="/img/useless.png" alt="image" id="gameCartegoryImage"></td>
+                                    <th scope="row"><%=user.id%></th>
+                                    <td id="gameStatus" ><%=user.status%></td>
+
+
+                                    <td>
+                                        <a href="/v1/chief/manageGames/manageProviders" class="btn btn-sm btn-secondary me-1"
+                                            data-bs-toggle="tooltip" data-bs-title="View Providers">
+                                            <i class="fa-solid fa-eye"></i>  Providers
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        <% }); %>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<%- include('./partials/scripts') %>
+
+</body>
+
+</html>

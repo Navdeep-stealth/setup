@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>Change Password</title>
+        <style>
+            .error-message {
+                color: red;
+                font-size: 0.875rem;
+                margin-top: 0.5rem;
+            }
+
+            #updateButton:disabled {
+                opacity: 0.5;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+    <section class="vh-96">
+        <div class="container py-5 h-96">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-light-subtle text-dark" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div>
+                                <h2 class="fw-bold mb-2 text-uppercase">Change Password</h2>
+                                <p class="text-dark-50 mb-5">_________________________________</p>
+
+                                <form action="/v1/chief/update-password/<%=currentUser.id%>" method="post" id="passwordForm">
+                                    <!-- Password fields -->
+                                    <% if (currentUser.role === 'admin' ) { %>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="password" id="currentPassword"
+                                                class="form-control form-control-lg" name="CurrentPassword"
+                                                placeholder="Current password" />
+                                        </div>
+                                        <% } %>
+
+                                        <% if (typeof errorMessage !== "undefined") { %>
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    Toastify({
+                                                        text: "<%= errorMessage %>",
+                                                        duration: 3000,
+                                                        close: true,
+                                                        gravity: "top", // `top` or `bottom`
+                                                        position: "right", // `left`, `center` or `right`
+                                                        backgroundColor: "red",
+                                                    }).showToast();
+                                                });
+                                            </script>
+                                        <% } %>
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <input type="password" id="password"
+                                                    class="form-control form-control-lg" name="NewPassword"
+                                                    placeholder="Enter new password" />
+                                                <span id="passwordError" class="error-message" style="display: none;">
+                                                    Password should be between 8 and 12 characters.
+                                                </span>
+                                            </div>
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <input type="password" id="confirmPassword"
+                                                    class="form-control form-control-lg" name="ConfirmPassword"
+                                                    placeholder="Confirm password" />
+                                            </div>
+
+
+                                            <div class="mt-3">
+                                                <button data-mdb-button-init data-mdb-ripple-init
+                                                    class="btn bg-dark text-light btn-md px-5" id="updateButton"
+                                                    type="submit" disabled>Update</button>
+                                            </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('./partials/scripts') %>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                const submitButton = document.getElementById('updateButton');
+                const passwordError = document.getElementById('passwordError');
+
+                // Regex to check for password length between 8 and 12 characters
+                const passwordRegex = /^.{8,12}$/;
+
+                function validatePasswords() {
+                    const password = passwordInput.value;
+                    const confirmPassword = confirmPasswordInput.value;
+                    const isPasswordValid = passwordRegex.test(password);
+
+                    // Enable the submit button if both passwords match, are non-empty, and password length is valid
+                    if (password !== '' && confirmPassword !== '' && password === confirmPassword && isPasswordValid) {
+                        submitButton.disabled = false;
+                        passwordError.style.display = 'none';
+                    } else {
+                        submitButton.disabled = true;
+                        if (!isPasswordValid) {
+                            passwordError.style.display = 'block';
+                        } else {
+                            passwordError.style.display = 'none';
+                        }
+                    }
+                }
+
+                passwordInput.addEventListener('input', validatePasswords);
+                confirmPasswordInput.addEventListener('input', validatePasswords);
+            });
+        </script>
+</body>
+
+</html>

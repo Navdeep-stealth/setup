@@ -36,7 +36,7 @@
 
                 <% if (typeof user !=='undefined' ) { %>
 
-                    <% if (user.role==='super_admin' ) { %>
+                    <% if (user.role==='super_admin') { %>
                         <div class="list-group">
 
                             <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
@@ -46,11 +46,13 @@
                             <a class="list-group-item list-group-item-action" href="#">Settlement</a>
                             <a class="list-group-item list-group-item-action" href="/v1/chief/register">Register New User</a>
 
-                            <a class="list-group-item list-group-item-action" href="/v1/chief/users">Manage Domains</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/users">Get All Users</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/managedomains">Manage Domains</a>
                             <a class="list-group-item list-group-item-action" href="#">Manage Sub Domains</a>
+
                             <a class="list-group-item list-group-item-action" href="#">Manage Debir Requests</a>
 
-                            <a class="list-group-item list-group-item-action" href="#">Manage Games</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/manageGames">Manage Games</a>
                             <a class="list-group-item list-group-item-action" href="#">Report</a>
                             <a class="list-group-item list-group-item-action" href="#">Revenue</a>
                             <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>
@@ -61,9 +63,9 @@
                             <div class="list-group">
 
                                 <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
-                                <a class="list-group-item list-group-item-action" href="#">Change Password</a>
+                                <a class="list-group-item list-group-item-action" href="/v1/chief/user/Changepassword/<%=user.id%>">Change Password</a>
                                 <a class="list-group-item list-group-item-action" href="#">Settlement</a>
-                                <a class="list-group-item list-group-item-action" href="#">Manage Games</a>
+                                <a class="list-group-item list-group-item-action" href="/v1/chief/manageGames">Manage Games</a>
                                 <a class="list-group-item list-group-item-action" href="#">Report</a>
                                 <a class="list-group-item list-group-item-action" href="#">Revenue</a>
                                 <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>

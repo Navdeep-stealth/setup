@@ -2,8 +2,11 @@ import fastify from "fastify";
 import { User } from "../models/admin.model.js";
 import { createTokenForUser } from "../utils/authentication.js";
 
-//register User
+/* register New User By SuperAdmin */
 async function registerUser(request, reply) {
+
+    
+
 
     const { fullname, username, password, role, status } = request.body
 
@@ -20,6 +23,7 @@ async function registerUser(request, reply) {
 
         //check if user already exist
         const existingUser = await User.findOne({ username });
+
         if (existingUser) {
             return reply.status(400).send({ errorMessage: "Username already exists..!" })
         }
@@ -33,42 +37,63 @@ async function registerUser(request, reply) {
         })
 
         await newUser.save()
-        reply.status(201).send({ message: "User created successfully" })
+        reply.status(201).view('register.ejs',{user:req.user})
+
     } catch (error) {
+
         console.log("Error while registering user", error);
         return reply.status(500).send({ errorMessage: "Internal server error..!" })
     }
 }
-
+/* render Loginn Form  */
 async function renderLogin(req, reply) {
-    // reply.send({message:'welcome'})
+
     return reply.view('login.ejs')
     // reply.view('login.ejs', {msg: "Login rendered.."})
 }
+
+/* render Register Form to SuperAdmin to register New Users */
 async function renderRegister(req, reply) {
-    // reply.send({message:'welcome'})
-    return reply.view('register.ejs')
-    // reply.view('login.ejs', {msg: "Login rendered.."})
+
+
+    if (req.user.role === `${process.env.USER_TYPE_1}`) {
+        return reply.view('register.ejs',{user:req.user})
+    }
+    else {
+        reply.redirect('/v1/chief/login')
+    }
 }
+
+/* render all users to SuperAdmin */
 async function renderUsers(req, reply) {
-    // reply.send({message:'welcome'})
 
-    const users = await User.find({})
+    let user = req.user
 
-    return reply.view('Users.ejs',{users})
-    // reply.view('login.ejs', {msg: "Login rendered.."})
+    if (user) {
+
+        const users = await User.find({})
+
+        return reply.view('Users.ejs', { users ,user})
+    }
+    else {
+        reply.redirect('/v1/chief/login')
+    }
 }
+
+/* render Form to  Edit the User */
 async function editUser(req, reply) {
-    // reply.send({message:'welcome'})
 
-    const user = await User.findOne({_id:req.params.id})
+    const currentUser = await User.findOne({ _id: req.params.id })
 
-    //console.log(user);
-    return reply.view('edituser.ejs',{user})
+    if (req.user && currentUser) {
+        return reply.view('edituser.ejs', { user:req.user ,currentUser})
+    }
+    else {
+        reply.redirect('/v1/chief/login')
+    }
 
-    // reply.view('login.ejs', {msg: "Login rendered.."})
 }
-
+/* login User using username and Password */
 async function loginUser(req, reply) {
     const { username, password } = req.body;
 
@@ -105,25 +130,21 @@ async function loginUser(req, reply) {
     }
 }
 
-
+/* Render Main DashBoard */
 async function renderDashboard(req, reply) {
 
     const user = req.user
 
-    console.log(user);
-
     if (user) {
 
-        let users = await User.find({})
-
-        return reply.view('dashboard.ejs', { user, users })
+        return reply.view('dashboard.ejs', { user })
     }
     else {
         reply.redirect('/v1/chief/login')
     }
 }
 
-
+/* delete User From dataBase By Super_Admin */
 async function deleteUser(req, reply) {
     const currentUser = req.user;
     const userIdToDelete = req.params.id;
@@ -138,8 +159,10 @@ async function deleteUser(req, reply) {
             }
 
             await User.deleteOne({ _id: userIdToDelete });
-            return reply.send({ message: 'User deleted successfully' });
+            return reply.redirect('/v1/chief/users');
+
         } catch (error) {
+
             console.error(error);
             return reply.status(500).send({ message: 'An error occurred while deleting the user' });
         }
@@ -148,8 +171,11 @@ async function deleteUser(req, reply) {
     }
 }
 
+/* logOut Function */
+
 async function logout(req, reply) {
     try {
+        /* rememeber to Pass Options and Path is always required */
         const options = {
             httpOnly: true,
             secure: true,
@@ -157,7 +183,7 @@ async function logout(req, reply) {
 
         };
 
-        // Clear the access token cookie
+        // Clear the access token cookie Remember to pass Options 
         reply.clearCookie('accessToken', options)
 
         // Set Cache-Control headers to prevent caching
@@ -165,55 +191,127 @@ async function logout(req, reply) {
 
         // Redirect to the login page
         return reply.redirect('/v1/chief/login');
+
     } catch (error) {
+
         console.log("Error while logging out:", error);
         // Handle error gracefully, optionally send error message
+
         return reply.send(error.message);
     }
 }
 
-/* Update User */
+/* Update User Credantials Like fullname , status , and Role */
 
-async function updateUser(req,reply){
-    let user = await User.findOne({_id:req.params.id})
+async function updateUser(req, reply) {
+    try {
+        let { fullname, status, role } = req.body;
+        let user = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                fullname: fullname,
+                status: status,
+                role: role,
+            },
+            { new: true } // Return the updated document
+        );
 
-try {
-    if (!user) {
-       return reply.send('user not found' )
-        
+        if (!user) {
+            return reply.status(404).send({ error: 'User not found' });
+        }
+
+        return reply.send(user);
+    } catch (error) {
+        console.error(error);
+        return reply.status(500).send({ error: 'An error occurred' });
     }
-    if (req.body.fullname) {
-
-        await user
-        user.fullname = req.body.fullname
-        await user.save();
-        console.log('fullname Changed SUccessfully');    
-    }
-    if (req.body.password) {
-
-        await user
-        user.password = req.body.password
-        await user.save();
-        console.log('password Changed SUccessfully');    
-    }
-    if (req.body.status) {
-
-        await user
-        user.status = req.body.status
-        await user.save();
-        console.log('status Changed SUccessfully');    
-    }
-
-    reply.redirect('/v1/chief/users')
-} catch (error) {
-    fastify.info.log(error)
 }
 
 
+
+/* render Form To update Password */
+async function Changepassword(req, reply) {
+    const currentUser = await User.findOne({ _id: req.params.id })
+
+    const user = req.user
+
+    return reply.view('changepwd.ejs', { user, currentUser })
+}
+
+
+/*  Update Password  */
+async function updatePassword(req, reply) {
+    let { CurrentPassword, NewPassword, ConfirmPassword } = req.body;
+    let currentUser = req.user
+
+    try {
+        // Check if new passwords match
+        if (NewPassword !== ConfirmPassword) {
+            return reply.send('Passwords do not match');
+        }
+
+        // Handle user type 1 (SuperAdmin)
+        if (req.user.role === `${process.env.USER_TYPE_1}`) {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.id },
+                { password: NewPassword },
+                { new: true }
+            );
+
+            if (!user) {
+                return reply.status(404).send({ error: 'User not found' });
+            }
+
+            // Save the updated user
+            await user.save();
+            return reply.redirect('/v1/chief/users');
+        }
+
+        // Handle user type 2 (admin user)
+        if (req.user.role === `${process.env.USER_TYPE_2}`) {
+            // Validate if the current password is correct before updating
+            const user = await User.findOne({ _id: req.params.id });
+
+            if (!user) {
+                return reply.status(404).send({ error: 'User not found' });
+            }
+
+            const isPasswordValid = await user.isPasswordCorrect(CurrentPassword);
+            if (!isPasswordValid) {
+                return reply.view('changepwd.ejs', { errorMessage: "Current password is incorrect!", user, currentUser });
+            }
+
+            // Update the password
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: req.params.id },
+                { password: NewPassword },
+                { new: true }
+            );
+
+            if (!updatedUser) {
+                return reply.status(404).send({ error: 'User not found' });
+            }
+            await updatedUser.save();
+            return reply.redirect('/v1/chief/logout');
+        }
+
+        return reply.status(403).send({ error: 'Forbidden' });
+
+    } catch (error) {
+        console.error(error);
+        return reply.status(500).send({ error: 'An error occurred' });
+    }
+}
+
+
+/* function for testing */
+async function test(req, reply) {
+    reply.send({ message: "This function only for Test" })
 }
 
 
 export {
+    test,
     registerUser,
     renderLogin,
     loginUser,
@@ -222,5 +320,8 @@ export {
     logout, renderRegister,
     renderUsers,
     editUser,
-    updateUser
+    updateUser,
+    Changepassword,
+    updatePassword,
+
 }

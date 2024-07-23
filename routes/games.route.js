@@ -1,8 +1,6 @@
-import { deleteUser, loginUser, logout, registerUser, renderDashboard, renderLogin } from '../controllers/admin.controller.js'
-
-import { verifyJWT } from '../middlewares/auth.middleware.js';
-
-import { getAllGames } from '../controllers/game.controllr.js';
+ import { test } from '../controllers/admin.controller.js';
+import {manageGames, manageGamesCategory,manageProviders} from '../controllers/game.controllr.js'
+ import { verifyJWT } from '../middlewares/auth.middleware.js';
 
 const setNoCacheHeaders = async (req, reply) => {
     // Set Cache-Control headers
@@ -11,12 +9,11 @@ const setNoCacheHeaders = async (req, reply) => {
 };
 
 async function games (fastify, options) {
-    // fastify.get('/login', getAllGames);
-    // fastify.post('/registerNewUser', { preHandler: [verifyJWT] }, registerUser);
-    // fastify.post('/login',loginUser)
-    // fastify.get('/delete/:id',{ preHandler: [verifyJWT] },deleteUser)
-    // fastify.get('/dashboard', { preHandler: [verifyJWT, setNoCacheHeaders] },renderDashboard)
-    // fastify.get('/logout',{ preHandler: [verifyJWT] }, logout)
+
+    /* routes to manage games */
+fastify.get('/',{ preHandler: [verifyJWT] },manageGamesCategory)
+fastify.get('/manageProviders',{ preHandler: [verifyJWT] },manageProviders)
+fastify.get('/manageProviders/viewGames',{ preHandler: [verifyJWT] },manageGames)
 
 
 }
