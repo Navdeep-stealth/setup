@@ -14,7 +14,10 @@
 
                 <div class="col-12">
                     <!-- sample table -->
+                <section class="section">
                     <h1 class="h1 fw-bold">Dashboard</h1>
+                    <div id="button-container"></div>
+                </section>
                     <% if (user.role==='super_admin' ) { %>
                         <div class="row row-cols-1 row-cols-md-3 g-4">
                             <!-- Card 1 -->
@@ -160,6 +163,7 @@
             </div>
         </div>
         <%- include('./partials/scripts') %>
+
 </body>
 
 </html>

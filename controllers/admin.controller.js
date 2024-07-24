@@ -220,7 +220,7 @@ async function updateUser(req, reply) {
             return reply.status(404).send({ error: 'User not found' });
         }
 
-        return reply.send(user);
+        return reply.redirect('/v1/chief/users');
     } catch (error) {
         console.error(error);
         return reply.status(500).send({ error: 'An error occurred' });
@@ -308,7 +308,6 @@ async function updatePassword(req, reply) {
 async function test(req, reply) {
     reply.send({ message: "This function only for Test" })
 }
-
 
 export {
     test,

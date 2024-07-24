@@ -12,6 +12,7 @@ import fastifyCookie from '@fastify/cookie';
 import { games } from './routes/games.route.js';
 import fastifyMongodb from '@fastify/mongodb';
 import { domains } from './routes/domain.route.js';
+import { balance } from './routes/balance.route.js';
 
 /* load env config */
 config();
@@ -74,6 +75,8 @@ fastifyApp.register(router, { prefix: '/v1/chief' });
 fastifyApp.register(games, { prefix: '/v1/chief/manageGames' });
 
 fastifyApp.register(domains, { prefix: '/v1/chief/managedomains' });
+
+fastifyApp.register(balance, { prefix: '/v1/chief/managebalance' });
 
 /* make a mongoose Connection */
 fastifyApp.register(connectDb);

@@ -39,8 +39,8 @@
                     <% if (user.role==='super_admin') { %>
                         <div class="list-group">
 
-                            <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
-                            <a class="list-group-item list-group-item-action" href="#">Change Password</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/dashboard">Dashboard</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/user/Changepassword/<%=user.id%>">Change Password</a>
                             <a class="list-group-item list-group-item-action" href="#">Requests</a>
                             <a class="list-group-item list-group-item-action" href="#">Invoice</a>
                             <a class="list-group-item list-group-item-action" href="#">Settlement</a>
@@ -50,11 +50,11 @@
                             <a class="list-group-item list-group-item-action" href="/v1/chief/managedomains">Manage Domains</a>
                             <a class="list-group-item list-group-item-action" href="#">Manage Sub Domains</a>
 
-                            <a class="list-group-item list-group-item-action" href="#">Manage Debir Requests</a>
+                            <a class="list-group-item list-group-item-action" href="#">Manage DebiT Requests</a>
 
                             <a class="list-group-item list-group-item-action" href="/v1/chief/manageGames">Manage Games</a>
                             <a class="list-group-item list-group-item-action" href="#">Report</a>
-                            <a class="list-group-item list-group-item-action" href="#">Revenue</a>
+                            <a class="list-group-item list-group-item-action" href="/v1/chief/managebalance">Revenue</a>
                             <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>
                         </div>
 
@@ -62,12 +62,12 @@
 
                             <div class="list-group">
 
-                                <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
+                                <a class="list-group-item list-group-item-action" href="/v1/chief/dashboard">Dashboard</a>
                                 <a class="list-group-item list-group-item-action" href="/v1/chief/user/Changepassword/<%=user.id%>">Change Password</a>
                                 <a class="list-group-item list-group-item-action" href="#">Settlement</a>
                                 <a class="list-group-item list-group-item-action" href="/v1/chief/manageGames">Manage Games</a>
                                 <a class="list-group-item list-group-item-action" href="#">Report</a>
-                                <a class="list-group-item list-group-item-action" href="#">Revenue</a>
+                                <a class="list-group-item list-group-item-action" href="/v1/chief/managebalance">Revenue</a>
                                 <a class="list-group-item list-group-item-action" href="/v1/chief/logout">Logout</a>
                             </div>
                             <% } %>

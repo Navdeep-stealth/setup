@@ -19,6 +19,11 @@
 
 <body>
     <%- include('./partials/nav') %>
+<div class="div">
+    <section class="section">
+        <div id="button-container"></div>
+    </section>
+</div>
     <section class="vh-96">
         <div class="container py-5 h-96">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -31,7 +36,7 @@
 
                                 <form action="/v1/chief/update-password/<%=currentUser.id%>" method="post" id="passwordForm">
                                     <!-- Password fields -->
-                                    <% if (currentUser.role === 'admin' ) { %>
+                                    <% if (user.role === 'admin' ) { %>
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="password" id="currentPassword"
                                                 class="form-control form-control-lg" name="CurrentPassword"
@@ -83,39 +88,7 @@
     </section>
 
     <%- include('./partials/scripts') %>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const passwordInput = document.getElementById('password');
-                const confirmPasswordInput = document.getElementById('confirmPassword');
-                const submitButton = document.getElementById('updateButton');
-                const passwordError = document.getElementById('passwordError');
-
-                // Regex to check for password length between 8 and 12 characters
-                const passwordRegex = /^.{8,12}$/;
-
-                function validatePasswords() {
-                    const password = passwordInput.value;
-                    const confirmPassword = confirmPasswordInput.value;
-                    const isPasswordValid = passwordRegex.test(password);
-
-                    // Enable the submit button if both passwords match, are non-empty, and password length is valid
-                    if (password !== '' && confirmPassword !== '' && password === confirmPassword && isPasswordValid) {
-                        submitButton.disabled = false;
-                        passwordError.style.display = 'none';
-                    } else {
-                        submitButton.disabled = true;
-                        if (!isPasswordValid) {
-                            passwordError.style.display = 'block';
-                        } else {
-                            passwordError.style.display = 'none';
-                        }
-                    }
-                }
-
-                passwordInput.addEventListener('input', validatePasswords);
-                confirmPasswordInput.addEventListener('input', validatePasswords);
-            });
-        </script>
+<script src="/js/Changepwd.js"></script>
 </body>
 
 </html>

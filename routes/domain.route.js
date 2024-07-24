@@ -13,9 +13,9 @@ async function domains (fastify, options) {
 
    /* routes to manage games */
 fastify.get('/',{ preHandler: [verifyJWT] },manageDomains )
-fastify.get('/viewDomain/:id',test);
-fastify.get('/editDomain/:id',test);
-fastify.get('/deleteDomain/:id',test);
+fastify.get('/viewDomain/:id',{ preHandler: [verifyJWT] },test);
+fastify.get('/editDomain/:id',{ preHandler: [verifyJWT] },test);
+fastify.get('/deleteDomain/:id',{ preHandler: [verifyJWT] },test);
 
 
 }
