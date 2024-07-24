@@ -14,10 +14,18 @@ async function manageDomains(req, reply) {
     return reply.view('domains.ejs', { users ,user})
 
 }
+async function addDomain(req, reply) {
 
+    const user = req.user
+
+
+    return reply.view('addDomain.ejs', {user})
+
+}
 
 
 export{
     manageDomains,
+    addDomain
 
 }

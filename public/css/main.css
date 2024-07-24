@@ -36,20 +36,7 @@
 }
 
 .section a{
-    background: #c4c4d5;
-    width: 100px;
-    height: 35px;
-    border-radius: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
     font-weight: 700;
-    color: black;
-    position: relative;
-    bottom: -15px;
-    left: 10px;
-
 }
 
 .div{
@@ -66,14 +53,6 @@ body::-webkit-scrollbar{
 
 }
 
-
-.card-body{
-
-    box-shadow: 6px 10px 15px 2px;
-
-
-}
-
 .card{
-    margin-bottom: 20px;
+        margin-bottom: 20px;
 }

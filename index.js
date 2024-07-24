@@ -13,6 +13,7 @@ import { games } from './routes/games.route.js';
 import fastifyMongodb from '@fastify/mongodb';
 import { domains } from './routes/domain.route.js';
 import { balance } from './routes/balance.route.js';
+import { verifyJWT } from './middlewares/auth.middleware.js';
 
 /* load env config */
 config();
@@ -27,9 +28,14 @@ const __dirname = path.dirname(__filename); // Get directory path
 /* initiate fastify */
 const fastifyApp = fastify({
 
-    /* set logger */
+    /* set json data limit upto 50Mb */
+    
+    bodyLimit: 50 * 1024 * 1024,
+
+    /* set logger with warn to log only errors and warning only */
+
     logger: {
-        level: 'warn', // Set the log level to 'warn' to reduce unwanted logs and it will only Log warnings and errors
+        level: 'warn', 
         transport: {
             target: 'pino-pretty',
             options: {
@@ -40,7 +46,6 @@ const fastifyApp = fastify({
     },
 });
 
-
 /* to handle post data */
 fastifyApp.register(fastifyFormbody);
 
@@ -48,15 +53,14 @@ fastifyApp.register(fastifyFormbody);
 fastifyApp.register(fastifyCookie);
 
 
-fastifyApp
-.register(fastifyStatic, {
+fastifyApp.register(fastifyStatic, {
         /* register static resource */
         root: path.join(__dirname, 'public') // Adjust path based on your project structure
-    })
+    });
 
 
     /* start listening to port */
-    .listen({port:process.env.PORT}, err => {
+fastifyApp.listen({port:process.env.PORT}, err => {
         if (err) throw err;
         console.log('Server listening on port http://localhost:3002/v1/chief/login');
     });
@@ -76,7 +80,7 @@ fastifyApp.register(games, { prefix: '/v1/chief/manageGames' });
 
 fastifyApp.register(domains, { prefix: '/v1/chief/managedomains' });
 
-fastifyApp.register(balance, { prefix: '/v1/chief/managebalance' });
+fastifyApp.register(balance,{ prefix: '/v1/chief/managebalance' });
 
 /* make a mongoose Connection */
 fastifyApp.register(connectDb);
